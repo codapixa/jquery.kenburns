@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" dir="ltr" lang="en-US">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html dir="ltr" lang="en-US">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Ken Burns Effect with HTML5 Canvas + jQuery</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../src/jquery.kenburns-0.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('img', '#img').kenburns({debug: true});
+  
+  $('#reset').submit(function() {
+    var settings = {
+      'zoom': $('select[name=zoom] option:selected', this).val(),
+      'duration': $('input[name=duration]', this).val(),
+      'align': $('select[name=aligment] option:selected', this).val()
+    };
+
+    $('img', '#img').kenburns('set', settings).kenburns('reset');
+
+    return false;
+  });
+  
+  $('#pause').click(function() {
+    if ($(this).hasClass('paused')) {
+      $(this).removeClass('paused').val('Pause');
+      $('img', '#img').kenburns('start');
+    } else {
+      $(this).addClass('paused').val('Continue');
+      $('img', '#img').kenburns('pause');
+    }
+  });
+  
+  $('#stop').click(function() {
+    if ($(this).hasClass('stopped')) {
+      $(this).removeClass('stopped').val('Stop');
+      $('img', '#img').kenburns('start');
+    } else {
+      $(this).addClass('stopped').val('Start');
+      $('img', '#img').kenburns('stop');
+    }
+  });
+});
+</script>
+<style type="text/css">
+.container {
+  margin: 0 auto;
+  max-width: 960px;
+}
+.wrapper {
+  margin: 0 10px;
+  position: relative;
+}
+.wrapper:after {
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+.kenburns {
+  width: 100%;
+  position: relative;
+  margin: auto;
+}
+.kenburns img { /* Avoid flashing */
+  display: none;
+}
+.kenburns canvas { /* Make it responsive */
+  width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="wrapper">
+    <header>
+      <h1>Ken Burns Effect with HTML5 Canvas + jQuery</h1>
+      <p>Read about <a href="http://en.wikipedia.org/wiki/Ken_Burns_effect">Ken Burns Effect</a> on Wikipedia.</p>
+    </header>
+    <div id="img" class="kenburns"><img src="images/moss.jpg" alt=""></div>
+    <form id="reset" method="get">
+      <p>
+      <label>Zoom: <select name="zoom">
+        <option value="1.1">1.1</option>
+        <option value="1.2">1.2</option>
+        <option value="1.3">1.3</option>
+        <option value="1.4">1.4</option>
+        <option value="1.5">1.5</option>
+      </select></label>,
+      <label>Duration: <input name="duration" value="7000"> ms</label>,
+      <label>Aligment: <select name="aligment">
+        <option value="random">random</option>
+        <option value="center">center</option>
+        <option value="left">left</option>
+        <option value="top">top</option>
+        <option value="right">right</option>
+        <option value="bottom">bottom</option>
+      </select></label>
+      <input type="submit" value="Reset">
+      <input type="button" value="Pause" id="pause">
+      <input type="button" value="Stop" id="stop">
+      </p>
+    </form>
+    
+    <footer>
+      <p>Made by <a href="http://twitter.com/firmanw">@firmanw</a> &amp; <a href="http://twitter.com/codapixa">@codapixa</a>. Fork me on <a href="https://github.com/codapixa/jquery.kenburns">Github</a></p>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

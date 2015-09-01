@@ -40,15 +40,15 @@
 	init: function() {
 		var self = this;
 
-		$('<img />').attr('src', $(self.target).attr('src')).load(function() {
+		jQuery('<img />').attr('src', jQuery(self.target).attr('src')).load(function() {
 		// Create Canvas element and append to target parent
 		if (self.canvas === null) {
 			// Hide the target
-			$(self.target).hide();
+			jQuery(self.target).hide();
 
 			// Create the replacement canvas
 			self.canvas = $('<canvas />')[0];
-			$(self.canvas).appendTo($(self.target).parent());
+			jQuery(self.canvas).appendTo(jQuery(self.target).parent());
 		}
 
 		self.image = this;
@@ -78,11 +78,17 @@
 		ctx.save();
 	},
 	_log: function(msg) {
-		if (this.options.debug) console.log('jQuery.kenburns > %s', msg);
+		if (this.options.debug){
+			console.log('jQuery.kenburns > %s', msg);
+		}
 	},
 	start: function() {
-		if (this.state == 'finish') return;
-		if (this.time === 0) this._redraw();
+		if (this.state === 'finish'){
+			return;
+		}
+		if (this.time === 0){
+			this._redraw();
+		}
 		this.exec();
 	},
 	exec: function() {
@@ -125,15 +131,15 @@
 			aligns = ['top', 'left', 'center', 'bottom', 'right'], // alignments
 
 			scaling = function(actual, scale, alignment) {
-			sw = Math.floor(actual.width * scale);
-			sh = Math.floor(actual.height * scale);
-			a = align(actual.x, actual.y, actual.width, actual.height, sw, sh, alignment);
+			var sw = Math.floor(actual.width * scale);
+			var sh = Math.floor(actual.height * scale);
+			var a = align(actual.x, actual.y, actual.width, actual.height, sw, sh, alignment);
 
 			return {x: a.x, y: a.y, width: sw, height: sh};
 			};
 
-		if (self.state != 'animate'){
-			if(self.options.align == 'random'){
+		if (self.state !== 'animate'){
+			if(self.options.align === 'random'){
 				self.align = aligns[Math.floor(Math.random() * aligns.length)];
 			}
 			else
@@ -141,7 +147,9 @@
 				self.align = self.options.align;
 			}
 		}
-		if (self.time === 0) self.time = timer(0);
+		if (self.time === 0){
+			self.time = timer(0);
+		}
 
 		self.state = 'animate';
 
@@ -189,20 +197,22 @@
 	}
 	};
 
-	$.fn.kenburns = function( arg ) {
+	jQuery.fn.kenburns = function( arg ) {
 	var args = arguments;
 
 	return this.each(function() {
-		var instance = $(this).data('kenburns') || {};
+		var instance = jQuery(this).data('kenburns') || {};
 
 		if ( instance[arg] ) {
-		return instance[arg].apply( instance, Array.prototype.slice.call( args, 1 ));
+			return instance[arg].apply( instance, Array.prototype.slice.call( args, 1 ));
 		} else if ( typeof arg === 'object' || !arg ) {
-		instance = new Kenburns(this, arg);
-		$(this).data('kenburns', instance);
-		return this;
-		} else {
-		$.error( 'Method ' +	method + ' does not exist on jQuery.kenburns' );
+			instance = new Kenburns(this, arg);
+			jQuery(this).data('kenburns', instance);
+			return this;
+		}
+		else
+		{
+			jQuery.error( 'Method ' +	arg + ' does not exist on jQuery.kenburns' );
 		}
 	});
 	};
